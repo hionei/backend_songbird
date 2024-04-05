@@ -16,6 +16,7 @@ dotenv.config();
 const networkName = "Songbird";
 const Schema = mongoose.Schema;
 const mongoDB = "mongodb://localhost:27017/songbirdData";
+const conn = mongoose.createConnection(mongoDB);
 
 const addrSchema = new Schema({
   epochID: String,
@@ -275,7 +276,6 @@ class SongbirdController {
     const { address } = req.body;
 
     try {
-      const conn = mongoose.createConnection(mongoDB);
       const songbirdAutoClaimModel = conn.model(
         "songbirdAutoclaimUsers",
         autoClaimSchema
@@ -293,7 +293,6 @@ class SongbirdController {
 
   autoClaim = async () => {
     try {
-      const conn = mongoose.createConnection(mongoDB);
       const songbirdAutoClaimModel = conn.model(
         "songbirdAutoclaimUsers",
         autoClaimSchema
@@ -350,7 +349,6 @@ class SongbirdController {
     const { address } = req.body;
 
     try {
-      const conn = mongoose.createConnection(mongoDB);
       const usersModel = conn.model("users", usersSchema);
 
       await usersModel.findOneAndUpdate(
@@ -370,7 +368,6 @@ class SongbirdController {
     const { address } = req.body;
 
     try {
-      const conn = mongoose.createConnection(mongoDB);
       const songbirdAutoClaimModel = conn.model(
         "songbirdAutoclaimUsers",
         autoClaimSchema
@@ -452,7 +449,6 @@ class SongbirdController {
 
   getPrevEpochRewardRate = async () => {
     try {
-      const conn = mongoose.createConnection(mongoDB);
       const prevModel = conn.model("prevData", prevSchema);
 
       const prevData = await prevModel.find({
@@ -486,7 +482,6 @@ class SongbirdController {
 
   savePrevData = async () => {
     try {
-      const conn = mongoose.createConnection(mongoDB);
       const prevModel = conn.model("prevData", prevSchema);
 
       await prevModel.findOneAndUpdate(
@@ -535,7 +530,6 @@ class SongbirdController {
     }
 
     for (let symbol of SGB_SYMBOLS) {
-      const conn = mongoose.createConnection(mongoDB);
       const dynamicAddrModel = conn.model(symbol, addrSchema);
       const dbRows = await dynamicAddrModel.find();
       let totalResult = {};
@@ -808,7 +802,6 @@ class SongbirdController {
                 `💲Songbird Price finalized for ${contractWithSymbol.symbol} in epochId ${epochId} 💲`
               );
             }
-            const conn = mongoose.createConnection(mongoDB);
             const dynamicAddrModel = conn.model(
               contractWithSymbol.symbol,
               addrSchema
