@@ -144,8 +144,6 @@ class SongbirdController {
 
       await this.initContracts();
 
-      this.initVariables();
-
       await this.setupListener();
 
       console.log(
@@ -171,6 +169,8 @@ class SongbirdController {
         await this.getWhitelistedAddresses();
 
         await this.getEpochID();
+
+        this.initVariables();
 
         await this.getPrevEpochRewardRate();
 
@@ -458,6 +458,8 @@ class SongbirdController {
       const prevData = await prevModel.find({
         epochID: String(Number(this.currentRewardEpochID) - 1),
       });
+
+      if (prevData.length == 0) return;
       for (let addr in this.addrWhitelistInfo) {
         const prevTotalReward = Number(
           this.web3.utils.fromWei(prevData[0].prevTotalReward[addr], "ether")
