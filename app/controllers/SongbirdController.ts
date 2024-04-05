@@ -404,8 +404,8 @@ class SongbirdController {
         const scheduledFeeList = rawscheduledFeeList[0].map(
           (feeInfo: any, index) => {
             return {
-              fee: feeInfo,
-              from: rawscheduledFeeList[1][index],
+              fee: Number(feeInfo),
+              from: Number(rawscheduledFeeList[1][index]),
             };
           }
         );
