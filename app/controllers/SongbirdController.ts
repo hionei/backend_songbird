@@ -397,15 +397,23 @@ class SongbirdController {
         const fee = await this.ftsoRewardManagerContract.methods
           .getDataProviderCurrentFeePercentage(addr)
           .call();
-        const scheduledFee = await this.ftsoRewardManagerContract.methods
+        const rawscheduledFeeList = await this.ftsoRewardManagerContract.methods
           .getDataProviderScheduledFeePercentageChanges(addr)
           .call();
+
+        const scheduledFeeList = rawscheduledFeeList[0].map(
+          (feeInfo: any, index) => {
+            return {
+              fee: feeInfo,
+              from: rawscheduledFeeList[1][index],
+            };
+          }
+        );
+
+        console.log(scheduledFeeList);
         this.feeList[addr] = {
           fee: fee.toString(),
-          scheduledFee: {
-            fee: scheduledFee[0].toString(),
-            from: scheduledFee[1].toString(),
-          },
+          scheduledFee: scheduledFeeList,
         };
       } catch (err) {
         console.log(addr, "getFee", err);
