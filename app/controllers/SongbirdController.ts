@@ -410,7 +410,6 @@ class SongbirdController {
           }
         );
 
-        console.log(scheduledFeeList);
         this.feeList[addr] = {
           fee: fee.toString(),
           scheduledFee: scheduledFeeList,
