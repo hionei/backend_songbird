@@ -293,6 +293,7 @@ class SongbirdController {
 
   autoClaim = async () => {
     try {
+      console.log("Launching auto claim");
       const songbirdAutoClaimModel = conn.model(
         "songbirdAutoclaimUsers",
         autoClaimSchema
@@ -613,10 +614,12 @@ class SongbirdController {
       this.currentRewardEpochID = await this.ftsoManagerWeb3Contract.methods
         .getCurrentRewardEpoch()
         .call();
+      console.log(this.currentRewardEpochID, this.tempRewardEpochId);
       if (
         Number(this.currentRewardEpochID) ==
         Number(this.tempRewardEpochId) + 1
       ) {
+        console.log("Launched auto claim");
         await this.autoClaim();
       } else {
         this.tempRewardEpochId = this.currentRewardEpochID;
