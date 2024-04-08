@@ -8,5 +8,6 @@ router.get("/providers", Songbird.getProvidersInfo);
 router.post("/enable-auto-claim", Songbird.enableAutoClaim);
 router.post("/remove-auto-claim", Songbird.removeAutoClaim);
 router.post("/add-new-user", Songbird.AddNewUser);
+router.post("/view-users", Songbird.ViewUsers);
 
 export default router;

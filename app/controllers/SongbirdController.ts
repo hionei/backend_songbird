@@ -346,6 +346,18 @@ class SongbirdController {
     }
   };
 
+  ViewUsers = async (req: Request, res: Response) => {
+    try {
+      const usersModel = conn.model("users", usersSchema);
+
+      const users = await usersModel.find({});
+      return res.json(users);
+    } catch (err) {
+      console.log(err.message);
+      return res.json({ message: "failed to load users data" });
+    }
+  };
+
   AddNewUser = async (req: Request, res: Response) => {
     const { address } = req.body;
 
