@@ -286,8 +286,10 @@ class SongbirdController {
         {},
         { new: true, upsert: true }
       );
+      return res.json({ result: "Enabled Auto claim" });
     } catch (err) {
       console.log(err.message);
+      return res.json({ result: err.message });
     }
   };
 
@@ -387,8 +389,10 @@ class SongbirdController {
       );
 
       await songbirdAutoClaimModel.deleteOne({ address: address });
+      return res.json({ Result: "Removed Auto claim" });
     } catch (err) {
       console.log(err.message);
+      return res.json({ Result: err.message });
     }
   };
 
