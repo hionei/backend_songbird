@@ -7,10 +7,12 @@ import {
 } from "../services/web3";
 import dotenv from "dotenv";
 import axios from "axios";
-import { RPC_URL, SGB_SYMBOLS, EXECUTOR_ADDRESS } from "../config";
+import { RPC_URL, SGB_SYMBOLS, EXECUTOR_ADDRESS, GRAPHQL_URL } from "../config";
 import mongoose from "mongoose";
 import { ethers } from "ethers";
 import { PRIVATE_KEY } from "../config/secret";
+import { GraphQLClient } from "graphql-request";
+
 dotenv.config();
 
 const networkName = "Songbird";
@@ -269,6 +271,51 @@ class SongbirdController {
     for (let addr in this.addrWhitelistInfo) {
       this.prevRewardRateList[addr] = 0;
       this.currentRewardRateList[addr] = 0;
+    }
+  };
+
+  GetDelegators = async (req: Request, res: Response) => {
+    try {
+      const { address, page } = req.params;
+
+      const displayCount = 10;
+
+      const client = new GraphQLClient(GRAPHQL_URL);
+      const offset = (Number(page) - 1) * displayCount;
+      const GET_DELEGATORS = `query 
+      {
+        delegates(
+          first: ${displayCount}
+          offset: ${offset}
+          orderBy: AMOUNT_DESC
+          filter: {
+            network: { equalTo: "songbird" }
+            delegatee: { equalTo: "${address}" }
+          }
+        ) {
+          nodes {
+            id
+            network
+            owner
+            delegatee
+            amount
+          }
+          totalCount
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+        }
+      }`;
+
+      const result = await client.request(GET_DELEGATORS);
+
+      return res.json({ result: result });
+    } catch (err) {
+      console.log(err.message);
+      return res.json({ result: "failed" });
     }
   };
 
