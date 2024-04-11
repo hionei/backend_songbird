@@ -10,5 +10,5 @@ router.post("/remove-auto-claim", Songbird.removeAutoClaim);
 router.post("/add-new-user", Songbird.AddNewUser);
 router.get("/view-users", Songbird.ViewUsers);
 router.get("/delegators/:address/:page", Songbird.GetDelegators);
-
+router.get("/view-autoclaimers", Songbird.ViewAutoClaimers);
 export default router;

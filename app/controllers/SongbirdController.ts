@@ -340,6 +340,21 @@ class SongbirdController {
     }
   };
 
+  ViewAutoClaimers = async (req: Request, res: Response) => {
+    try {
+      const songbirdAutoClaimModel = conn.model(
+        "songbirdAutoclaimUsers",
+        autoClaimSchema
+      );
+
+      const result = await songbirdAutoClaimModel.find({});
+      return res.json({ result: result });
+    } catch (err) {
+      console.log(err.message);
+      return res.json({ result: err.message });
+    }
+  };
+
   autoClaim = async () => {
     try {
       console.log("Launching auto claim");
